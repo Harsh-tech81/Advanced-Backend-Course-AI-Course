@@ -4,7 +4,8 @@ import connectDB from "./lib/db.js";
 import User from "./model/user.model.js";
 import Redis from "ioredis";
 import rateLimiter from './middleware/rateLimiting.js'
-
+import sendEmail from "./lib/sendEmail.js";
+import emailQueue from "./queue.js";
 const app = express();
 dotenv.config();
 // In this Phase of  Redis tutorial we will learn how to use Redis as a cache for our MongoDB database. We will create a simple API that allows us to create and retrieve users from the database, and we will use Redis to cache the results of our queries to improve performance.(API Caching with Redis and MongoDB)
@@ -16,11 +17,12 @@ const PORT = process.env.PORT || 5000;
 app.get("/", (req, res) => {
   return res.status(200).json({ message: "Hello, from Redis !" });
 });
-
+// wihtout Queue(BullMQ) SignUp API 
 app.post("/create", async (req, res) => {
   const { name, email, password } = req.body;
   await redis.del("user:all");
   const user = await User.create({ name, email, password });
+ await emailQueue.add('send-email', { email });
   return res.status(200).json({ message: "Created New User", user });
 });
 
