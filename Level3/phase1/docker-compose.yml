@@ -12,7 +12,7 @@ services:
      ports:
        - 5000:7000
      env_file:
-       - ./server/.env
+       - ./phase1/server/.env
      environment:
        - SERVER_NAME=First Server
 
@@ -22,7 +22,7 @@ services:
      ports:
        - 5001:7000
      env_file:
-       - ./server/.env
+       - ./phase1/server/.env
      environment:
        - SERVER_NAME=Second Server
 
@@ -31,6 +31,6 @@ services:
      ports:
        - 5002:7000
      env_file:
-       - ./server/.env
+       - ./phase1/server/.env
      environment:
        - SERVER_NAME=Third Server
